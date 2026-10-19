@@ -174,14 +174,14 @@ void AttackMask::InitializeMask(Mask mask, int square)
     {
         const int num_attacks = raw_bishop_masks[square].CountBits();
         const Bitboard raw_bishop_mask = raw_bishop_masks[square];
-        const int magic_bitboard = Magic::BISHOP_MAGIC_NUMBERS[square];
+        const uint64_t magic_bitboard = Magic::BISHOP_MAGIC_NUMBERS[square];
         const int magic_shift = 64 - Magic::BISHOP_ATTACK_COUNT_MASK[square];
 
         for (int occupancy_index = 0; occupancy_index < (1 << num_attacks); occupancy_index++)
         {
             attack_mask = 0ULL;
             Bitboard masked_occupancy = GetMaskedOccupancy(occupancy_index, raw_bishop_mask);
-            int magic_index = (masked_occupancy * magic_bitboard) >> (magic_shift);
+            uint64_t magic_index = (masked_occupancy * magic_bitboard) >> (magic_shift);
 
             for (rank = target_rank + 1, file = target_file + 1;
                  rank < 8 && file < 8;
@@ -225,13 +225,13 @@ void AttackMask::InitializeMask(Mask mask, int square)
     {
         const int num_attacks = raw_rook_masks[square].CountBits();
         const Bitboard raw_rook_mask = raw_rook_masks[square];
-        const int magic_bitboard = Magic::ROOK_MAGIC_NUMBERS[square];
+        const uint64_t magic_bitboard = Magic::ROOK_MAGIC_NUMBERS[square];
         const int magic_shift = 64 - Magic::ROOK_ATTACK_COUNT_MASK[square];
         for (int occupancy_index = 0; occupancy_index < (1 << num_attacks); occupancy_index++)
         {
             attack_mask = 0ULL;
             Bitboard masked_occupancy = GetMaskedOccupancy(occupancy_index, raw_rook_mask);
-            int magic_index = (masked_occupancy * magic_bitboard) >> (magic_shift);
+            uint64_t magic_index = (masked_occupancy * magic_bitboard) >> (magic_shift);
             for (rank = target_rank + 1; rank < 8; rank++)
             {
                 attack_mask |= (1ULL << (rank * 8 + target_file));
@@ -259,6 +259,7 @@ void AttackMask::InitializeMask(Mask mask, int square)
             rook_masks[square][magic_index] = attack_mask;
             queen_masks[square][magic_index] |= attack_mask;
         }
+        return;
     }
 
     case King:
