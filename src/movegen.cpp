@@ -54,20 +54,21 @@ std::vector<Move> MoveGen::GetPawnMoves(ChessBoard chess_board, int color)
                 !(current_occupancy.Test(double_push_target_square)))
                 moves.push_back(Move(source_square, double_push_target_square, piece, 0, 0, 1, 0, 0));
             if ((color && (source_square >= ChessEncoding::a2 && source_square <= ChessEncoding::h2)) ||
-                (!color && (source_square >= ChessEncoding::a8 && source_square <= ChessEncoding::h8)))
+                (!color && (source_square >= ChessEncoding::a7 && source_square <= ChessEncoding::h7)))
             {
                 moves.push_back(Move(source_square, target_square, piece, ChessEncoding::Q, 0, 0, 0, 0));
                 moves.push_back(Move(source_square, target_square, piece, ChessEncoding::R, 0, 0, 0, 0));
                 moves.push_back(Move(source_square, target_square, piece, ChessEncoding::B, 0, 0, 0, 0));
                 moves.push_back(Move(source_square, target_square, piece, ChessEncoding::N, 0, 0, 0, 0));
             }
-            moves.push_back(Move(source_square, target_square, piece, 0, 0, 0, 0, 0));
+            else
+                moves.push_back(Move(source_square, target_square, piece, 0, 0, 0, 0, 0));
         }
         while (pawn_attack_mask)
         {
             target_square = pawn_attack_mask.PopLsbIndex();
             if ((color && (source_square >= ChessEncoding::a2 && source_square <= ChessEncoding::h2)) ||
-                (!color && (source_square >= ChessEncoding::a8 && source_square <= ChessEncoding::h8)))
+                (!color && (source_square >= ChessEncoding::a7 && source_square <= ChessEncoding::h7)))
             {
                 moves.push_back(Move(source_square, target_square, piece, ChessEncoding::Q, 1, 0, 0, 0));
                 moves.push_back(Move(source_square, target_square, piece, ChessEncoding::R, 1, 0, 0, 0));
